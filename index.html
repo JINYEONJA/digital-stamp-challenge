@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>디지털 스탬프 챌린지!</title>
+    <title>디지털 스탬프 챌린지! (Ver 2.0)</title>
     <style>
         /* 전체 페이지 스타일 */
         body {
             font-family: 'Pretendard', 'Malgun Gothic', sans-serif;
             margin: 0;
             padding: 20px;
-            /* 밝고 재미있는 배경 */
-            background: linear-gradient(135deg, #a8e0ff, #ffb3ba, #ffffba);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            /* 세련된 배경 그라데이션 */
+            background: linear-gradient(135deg, #6dd5ed, #2193b0);
+            background-size: 200% 200%;
+            animation: gradientBG 10s ease infinite;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -29,19 +29,20 @@
 
         /* 콘텐츠를 담을 흰색 컨테이너 */
         .container {
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 40px;
             border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
             text-align: center;
             max-width: 800px;
             width: 90%;
+            backdrop-filter: blur(5px);
         }
 
         h1 {
-            color: #333;
+            color: #1a2c4e;
             font-size: 2.5em;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         p {
@@ -50,57 +51,117 @@
             margin-bottom: 30px;
         }
 
-        /* 스탬프들이 들어갈 보드 */
-        .stamp-board {
-            display: grid;
-            /* 3x2 또는 2x3 그리드 자동 조절 */
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 25px;
-        }
-
-        /* 개별 스탬프 스타일 (비활성화 상태) */
-        .stamp {
-            aspect-ratio: 1 / 1; /* 1:1 비율 유지 */
-            border: 5px dashed #ccc;
-            border-radius: 50%; /* 동그란 모양 */
+        /* 번호 입력 영역 */
+        .input-area {
+            margin-bottom: 30px;
             display: flex;
             justify-content: center;
-            align-items: center;
+            gap: 10px;
+        }
+
+        #password-input {
+            padding: 12px 15px;
+            font-size: 1.2em;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            width: 200px;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+        #password-input:focus {
+            outline: none;
+            border-color: #2193b0;
+        }
+
+        #submit-button {
+            padding: 12px 25px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: white;
+            background-color: #2193b0;
+            border: none;
+            border-radius: 8px;
             cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #submit-button:hover {
+            background-color: #1a7b91;
+        }
+
+        /* 스탬프들이 들어갈 보드 (2행 3열) */
+        .stamp-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        /* 개별 스탬프 스타일 */
+        .stamp {
+            aspect-ratio: 1 / 1;
+            border: 5px dashed #ccc;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             transition: all 0.4s ease;
             background-color: #f0f0f0;
             color: #aaa;
             font-size: 1.4em;
             font-weight: bold;
-            text-align: center;
             padding: 10px;
-            word-break: keep-all; /* 단어 중간에 줄바꿈 방지 */
+            word-break: keep-all;
         }
 
-        /* 스탬프에 마우스를 올렸을 때 효과 */
-        .stamp:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        /* 스탬프 획득 시 스타일 (활성화 상태) */
+        /* 스탬프 획득 시 스타일 */
         .stamp.stamped {
             border-style: solid;
-            border-color: #ff6b6b;
-            background-color: #ffda79;
-            color: #c44569;
-            transform: rotate(-10deg) scale(1.02);
-            font-size: 1.5em;
-            text-shadow: 1px 1px 1px #fff;
+            transform: rotate(-8deg) scale(1.05);
         }
+
+        /* 저장/초기화 버튼 영역 */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .action-button {
+            padding: 10px 20px;
+            font-size: 1em;
+            font-weight: bold;
+            border-radius: 8px;
+            border: 2px solid;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        #save-button {
+            color: #27ae60;
+            border-color: #27ae60;
+            background-color: white;
+        }
+        #save-button:hover {
+            background-color: #27ae60;
+            color: white;
+        }
+        #reset-button {
+            color: #e74c3c;
+            border-color: #e74c3c;
+            background-color: white;
+        }
+        #reset-button:hover {
+            background-color: #e74c3c;
+            color: white;
+        }
+
 
         /* 축하 메시지 (처음엔 숨김) */
         #congrats-message {
             margin-top: 40px;
             font-size: 2em;
             font-weight: bold;
-            color: #20bf6b;
-            display: none; /* 처음에 숨기기 */
+            color: #1a2c4e;
+            display: none;
             animation: fadeIn 1s ease-in-out;
         }
 
@@ -115,17 +176,35 @@
 
     <div class="container">
         <h1>✨ 디지털 스탬프 챌린지! ✨</h1>
-        <p>각 스탬프를 클릭하고 비밀번호를 입력하여 도장을 모두 모아보세요!</p>
+        <p>전화번호 뒷자리 4자리를 입력하고 '스탬프 찍기'를 눌러주세요.</p>
         
+        <div class="input-area">
+            <input type="tel" id="password-input" placeholder="비밀번호 4자리" maxlength="4">
+            <button id="submit-button">스탬프 찍기</button>
+        </div>
+
         <div class="stamp-board">
             <!-- 자바스크립트로 스탬프가 생성될 영역 -->
+        </div>
+
+        <div class="action-buttons">
+            <button id="save-button" class="action-button">💾 진행 상황 저장하기</button>
+            <button id="reset-button" class="action-button">🔄 처음부터 다시하기</button>
         </div>
 
         <h2 id="congrats-message">🎉 모든 스탬프를 모았습니다! 정말 대단해요! 🎉</h2>
     </div>
 
     <script>
-        // 스탬프 정보 (이름과 비밀번호)
+        // --- 요소 선택 ---
+        const stampBoard = document.querySelector('.stamp-board');
+        const congratsMessage = document.getElementById('congrats-message');
+        const passwordInput = document.getElementById('password-input');
+        const submitButton = document.getElementById('submit-button');
+        const saveButton = document.getElementById('save-button');
+        const resetButton = document.getElementById('reset-button');
+        
+        // --- 스탬프 데이터 ---
         const stampData = [
             { id: 'hilearning', name: '하이러닝', password: '0702', color: { border: '#4a90e2', bg: '#d4e6ff', text: '#00408b' } },
             { id: 'hicoaching', name: '하이코칭', password: '0703', color: { border: '#50e3c2', bg: '#d7fff7', text: '#00695c' } },
@@ -135,60 +214,110 @@
             { id: 'digital-center', name: '디지털센터', password: '0707', color: { border: '#e55039', bg: '#ffddd8', text: '#8d230f' } },
         ];
 
-        const stampBoard = document.querySelector('.stamp-board');
-        const congratsMessage = document.getElementById('congrats-message');
+        // 획득한 스탬프 ID를 저장할 Set (중복 방지)
+        let stampedIds = new Set();
+        
+        // --- 함수 정의 ---
 
-        // 1. 스탬프 생성 및 화면에 추가
-        stampData.forEach(data => {
-            const stampElement = document.createElement('div');
-            stampElement.classList.add('stamp');
-            stampElement.id = data.id;
-            stampElement.innerHTML = data.name; // br 태그를 위해 innerHTML 사용
+        // 스탬프 UI를 현재 상태에 맞게 다시 그리는 함수
+        function renderStamps() {
+            stampBoard.innerHTML = ''; // 보드를 깨끗이 비움
+            stampData.forEach(data => {
+                const stampElement = document.createElement('div');
+                stampElement.classList.add('stamp');
+                stampElement.id = data.id;
+                stampElement.innerHTML = data.name;
 
-            // 2. 각 스탬프에 클릭 이벤트 추가
-            stampElement.addEventListener('click', () => {
-                // 이미 획득한 스탬프는 반응하지 않음
-                if (stampElement.classList.contains('stamped')) {
-                    alert('이미 획득한 스탬프입니다!');
-                    return;
-                }
-
-                // 비밀번호 입력받기
-                const userInput = prompt(`'${data.name.replace('<br>', ' ')}' 스탬프의 비밀번호를 입력하세요:`);
-                
-                // 사용자가 '취소'를 누른 경우
-                if (userInput === null) {
-                    return; 
-                }
-
-                // 3. 비밀번호 확인
-                if (userInput.trim() === data.password) {
-                    // 정답일 경우
-                    alert('정답입니다! 스탬프를 획득했습니다! 쾅!');
+                if (stampedIds.has(data.id)) {
+                    // 획득한 스탬프일 경우
                     stampElement.classList.add('stamped');
-                    // 스탬프별로 다른 색상 적용
                     stampElement.style.borderColor = data.color.border;
                     stampElement.style.backgroundColor = data.color.bg;
                     stampElement.style.color = data.color.text;
-
-                    checkAllStamped(); // 모든 스탬프를 모았는지 확인
-                } else {
-                    // 오답일 경우
-                    alert('비밀번호가 틀렸습니다. 다시 시도해주세요.');
                 }
+                stampBoard.appendChild(stampElement);
             });
+            checkAllStamped();
+        }
 
-            stampBoard.appendChild(stampElement);
-        });
-
-        // 4. 모든 스탬프를 모았는지 확인하는 함수
+        // 모든 스탬프를 모았는지 확인하는 함수
         function checkAllStamped() {
-            const stampedCount = document.querySelectorAll('.stamp.stamped').length;
-            if (stampedCount === stampData.length) {
-                congratsMessage.style.display = 'block'; // 숨겨둔 축하 메시지 보이기
+            if (stampedIds.size === stampData.length) {
+                congratsMessage.style.display = 'block';
+            } else {
+                congratsMessage.style.display = 'none';
             }
         }
-    </script>
 
+        // 비밀번호를 확인하고 스탬프를 찍는 함수
+        function processInput() {
+            const userInput = passwordInput.value.trim();
+            if (userInput.length !== 4) {
+                alert('비밀번호 4자리를 정확히 입력해주세요.');
+                return;
+            }
+
+            const matchedStamp = stampData.find(stamp => stamp.password === userInput);
+
+            if (matchedStamp) {
+                if (stampedIds.has(matchedStamp.id)) {
+                    alert('이미 획득한 스탬프입니다!');
+                } else {
+                    alert(`'${matchedStamp.name.replace('<br>', ' ')}' 스탬프 획득! 쾅!`);
+                    stampedIds.add(matchedStamp.id);
+                    renderStamps(); // 화면 즉시 업데이트
+                }
+            } else {
+                alert('일치하는 비밀번호가 없습니다. 다시 확인해주세요.');
+            }
+            passwordInput.value = ''; // 입력창 비우기
+            passwordInput.focus(); // 다시 입력하기 편하게 포커스 유지
+        }
+
+        // 진행 상황을 브라우저에 저장하는 함수
+        function saveProgress() {
+            // Set을 Array로 변환 후 JSON 문자열로 저장
+            localStorage.setItem('digitalStampProgress', JSON.stringify(Array.from(stampedIds)));
+            alert('현재까지 모은 스탬프가 브라우저에 저장되었습니다!');
+        }
+
+        // 저장된 진행 상황을 불러오는 함수
+        function loadProgress() {
+            const savedData = localStorage.getItem('digitalStampProgress');
+            if (savedData) {
+                // JSON 문자열을 Array로, 다시 Set으로 변환하여 불러옴
+                stampedIds = new Set(JSON.parse(savedData));
+                console.log('저장된 데이터를 불러왔습니다.');
+            }
+            renderStamps(); // 불러온 데이터로 화면 그리기
+        }
+
+        // 모든 진행 상황을 초기화하는 함수
+        function resetProgress() {
+            const isConfirmed = confirm('정말 모든 진행 상황을 초기화하시겠습니까? 저장된 데이터가 사라집니다.');
+            if (isConfirmed) {
+                stampedIds.clear();
+                localStorage.removeItem('digitalStampProgress');
+                renderStamps();
+                alert('모든 스탬프가 초기화되었습니다.');
+            }
+        }
+
+        // --- 이벤트 리스너 연결 ---
+        submitButton.addEventListener('click', processInput);
+        // 엔터 키로도 입력 가능하게
+        passwordInput.addEventListener('keyup', (event) => {
+            if (event.key === 'Enter') {
+                processInput();
+            }
+        });
+        
+        saveButton.addEventListener('click', saveProgress);
+        resetButton.addEventListener('click', resetProgress);
+
+        // --- 페이지 로드 시 초기 실행 ---
+        window.addEventListener('load', loadProgress);
+
+    </script>
 </body>
 </html>
