@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>디지털 스탬프 챌린지!</title>
+    <style>
+        /* 전체 페이지 스타일 */
+        body {
+            font-family: 'Pretendard', 'Malgun Gothic', sans-serif;
+            margin: 0;
+            padding: 20px;
+            /* 밝고 재미있는 배경 */
+            background: linear-gradient(135deg, #a8e0ff, #ffb3ba, #ffffba);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* 배경색 애니메이션 */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 콘텐츠를 담을 흰색 컨테이너 */
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 800px;
+            width: 90%;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #555;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+
+        /* 스탬프들이 들어갈 보드 */
+        .stamp-board {
+            display: grid;
+            /* 3x2 또는 2x3 그리드 자동 조절 */
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 25px;
+        }
+
+        /* 개별 스탬프 스타일 (비활성화 상태) */
+        .stamp {
+            aspect-ratio: 1 / 1; /* 1:1 비율 유지 */
+            border: 5px dashed #ccc;
+            border-radius: 50%; /* 동그란 모양 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            background-color: #f0f0f0;
+            color: #aaa;
+            font-size: 1.4em;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            word-break: keep-all; /* 단어 중간에 줄바꿈 방지 */
+        }
+
+        /* 스탬프에 마우스를 올렸을 때 효과 */
+        .stamp:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 스탬프 획득 시 스타일 (활성화 상태) */
+        .stamp.stamped {
+            border-style: solid;
+            border-color: #ff6b6b;
+            background-color: #ffda79;
+            color: #c44569;
+            transform: rotate(-10deg) scale(1.02);
+            font-size: 1.5em;
+            text-shadow: 1px 1px 1px #fff;
+        }
+
+        /* 축하 메시지 (처음엔 숨김) */
+        #congrats-message {
+            margin-top: 40px;
+            font-size: 2em;
+            font-weight: bold;
+            color: #20bf6b;
+            display: none; /* 처음에 숨기기 */
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>✨ 디지털 스탬프 챌린지! ✨</h1>
+        <p>각 스탬프를 클릭하고 비밀번호를 입력하여 도장을 모두 모아보세요!</p>
+        
+        <div class="stamp-board">
+            <!-- 자바스크립트로 스탬프가 생성될 영역 -->
+        </div>
+
+        <h2 id="congrats-message">🎉 모든 스탬프를 모았습니다! 정말 대단해요! 🎉</h2>
+    </div>
+
+    <script>
+        // 스탬프 정보 (이름과 비밀번호)
+        const stampData = [
+            { id: 'hilearning', name: '하이러닝', password: '0702', color: { border: '#4a90e2', bg: '#d4e6ff', text: '#00408b' } },
+            { id: 'hicoaching', name: '하이코칭', password: '0703', color: { border: '#50e3c2', bg: '#d7fff7', text: '#00695c' } },
+            { id: 'ai-essay', name: 'AI서논술형', password: '0704', color: { border: '#bd10e0', bg: '#f2d1f7', text: '#6a0080' } },
+            { id: 'online-school', name: '온라인<br>공유학교', password: '0705', color: { border: '#f5a623', bg: '#fff0d5', text: '#8c5d00' } },
+            { id: 'digital-citizen', name: '디지털<br>시민교육', password: '0706', color: { border: '#7ed321', bg: '#e9ffd1', text: '#387002' } },
+            { id: 'digital-center', name: '디지털센터', password: '0707', color: { border: '#e55039', bg: '#ffddd8', text: '#8d230f' } },
+        ];
+
+        const stampBoard = document.querySelector('.stamp-board');
+        const congratsMessage = document.getElementById('congrats-message');
+
+        // 1. 스탬프 생성 및 화면에 추가
+        stampData.forEach(data => {
+            const stampElement = document.createElement('div');
+            stampElement.classList.add('stamp');
+            stampElement.id = data.id;
+            stampElement.innerHTML = data.name; // br 태그를 위해 innerHTML 사용
+
+            // 2. 각 스탬프에 클릭 이벤트 추가
+            stampElement.addEventListener('click', () => {
+                // 이미 획득한 스탬프는 반응하지 않음
+                if (stampElement.classList.contains('stamped')) {
+                    alert('이미 획득한 스탬프입니다!');
+                    return;
+                }
+
+                // 비밀번호 입력받기
+                const userInput = prompt(`'${data.name.replace('<br>', ' ')}' 스탬프의 비밀번호를 입력하세요:`);
+                
+                // 사용자가 '취소'를 누른 경우
+                if (userInput === null) {
+                    return; 
+                }
+
+                // 3. 비밀번호 확인
+                if (userInput.trim() === data.password) {
+                    // 정답일 경우
+                    alert('정답입니다! 스탬프를 획득했습니다! 쾅!');
+                    stampElement.classList.add('stamped');
+                    // 스탬프별로 다른 색상 적용
+                    stampElement.style.borderColor = data.color.border;
+                    stampElement.style.backgroundColor = data.color.bg;
+                    stampElement.style.color = data.color.text;
+
+                    checkAllStamped(); // 모든 스탬프를 모았는지 확인
+                } else {
+                    // 오답일 경우
+                    alert('비밀번호가 틀렸습니다. 다시 시도해주세요.');
+                }
+            });
+
+            stampBoard.appendChild(stampElement);
+        });
+
+        // 4. 모든 스탬프를 모았는지 확인하는 함수
+        function checkAllStamped() {
+            const stampedCount = document.querySelectorAll('.stamp.stamped').length;
+            if (stampedCount === stampData.length) {
+                congratsMessage.style.display = 'block'; // 숨겨둔 축하 메시지 보이기
+            }
+        }
+    </script>
+
+</body>
+</html>
